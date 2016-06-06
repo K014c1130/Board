@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title> 掲示板</title>
 </head>
+<body>
+
   <?php
   $name = $_POST['name'];
   $time = $_POST['name'];
@@ -25,6 +27,7 @@
   ?>
     <input type = "submmit" name="delete" value="delete">
     <?php print "<br />" ?>
+    <?php print $rec['message']; ?>
   }
 
 </body>
