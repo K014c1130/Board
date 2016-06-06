@@ -42,9 +42,10 @@
 
   <?php
   $name = $_POST['name'];
-  $time = $_POST['name'];
+  $time = $_POST['time'];
+  $message = $_POST['massage'];
 
-  $sql = "SELECT name,time FROM DB
+  $sql = "SELECT name,time FROM list
           ORDER BY time DESC"
   $stmt = $dbh->prepare($sql);
   $stmt -> execute();
