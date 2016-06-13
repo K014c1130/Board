@@ -23,7 +23,7 @@ try{
     $username = htmlspecialchars($_GET['name']);
     print $username;
   ?>
-  さん<br>
+  さん<br />
 
   <form method="get" action="board.php">
     <input type="text" name="sentence">
@@ -41,26 +41,27 @@ try{
     }
 
 
-  $sql = "SELECT name,ts,td,massage FROM list
-          ORDER BY td DESC,ts DESC";
+  $sql = "SELECT name,ts,dt,massage FROM list
+          ORDER BY dt DESC,ts DESC";
   $stmt = $dbh->prepare($sql);
   $stmt -> execute();
+  $dbh = null;
 
   while(true){
     $rec = $stmt->fetch(PDO::FETCH_ASSOC);
     if($rec==false){
-      $dbh = null;
       break;
     }
     print $rec['name'];
     print "  ";
-    print $rec['td'];
+    print $rec['dt'];
     print " ";
     print $rec['ts'];
 
-    print '<input type = "submmit" name="delete" value="delete">';
+    print '<input type = "submit" name="delete" value="delete">';
     print '<br />';
     print $rec['massage'];
+    print '<br /> <br />';
   }
 }catch(Exception $e){
   print 'ただいまデータベースに接続できません';
