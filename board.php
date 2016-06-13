@@ -6,6 +6,15 @@
 </head>
 <body>
 
+<?php
+
+try{
+  $dsn = 'mysql:dbname=board;host=localhost;charset=utf8';
+  $user = 'root';
+  $password = '';
+  $dbh = new PDO($dsn, $user, $password);
+  $dbh->query('SET NAMES utf8');
+?>
   <div align="right">
     <a href="login.php">ログアウト</a>
   </div>
@@ -24,30 +33,20 @@
 
   <?php
     if(isset($_GET['sentence'])) {
-      $dsn = 'mysql:dbname=board;host=localhost;charset=utf8';
-      $user = 'root';
-      $password = 'root';
-      $dbh = new PDO($dsn, $user, $password);
-      $dbh->query('SET NAMES utf8');
 
       $sql = 'INSERT INTO list(item) VALUES (?)';
       $stmt = $dbh->prepare($sql);
       $data[] = $_GET['sentence'];
       $stmt-> execute($data);
     }
-  ?>
 
-
-
-
-
-  <?php
   $name = $_POST['name'];
-  $time = $_POST['time'];
+  $ts = $_POST['ts'];
+  $td = $_POST['td'];
   $message = $_POST['massage'];
 
-  $sql = "SELECT name,time FROM list
-          ORDER BY time DESC"
+  $sql = "SELECT name,ts,td,massage FROM list
+          ORDER BY time DESC";
   $stmt = $dbh->prepare($sql);
   $stmt -> execute();
 
@@ -59,12 +58,18 @@
     }
     print $rec['name'];
     print "  ";
-    print $rec['time'];
-  ?>
-    <input type = "submmit" name="delete" value="delete">
-    <?php print "<br />" ?>
-    <?php print $rec['message']; ?>
-  }
+    print $rec['td'];
+    print " ";
+    print $rec['ts'];
 
+    print '<input type = "submmit" name="delete" value="delete">';
+    print "<br />";
+    print $rec['message'];
+  }
+}catch{
+  print 'ただいまデータベースに接続できません';
+  exit();
+}
+?>
 </body>
     </html>
