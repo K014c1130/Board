@@ -22,7 +22,7 @@ try{
     $username = htmlspecialchars($_GET['name']);
     print $username;
   ?>
-  さん<br>
+  さん<br />
 
   <form method="get" action="board.php">
     <input type="text" name="sentence">
@@ -33,33 +33,45 @@ try{
   <?php
     if(isset($_GET['sentence'])) {
 
-      $sql = 'INSERT INTO list(massage) VALUES (?)';
+      $sql = 'INSERT INTO list(name,massage) VALUES (?,?)';
       $stmt = $dbh->prepare($sql);
+      $data[] = $username;
       $data[] = $_GET['sentence'];
       $stmt-> execute($data);
     }
 
+    if(isset($_GET['delete'])) {
 
-  $sql = "SELECT name,ts,td,massage FROM list
-          ORDER BY td DESC,ts DESC";
+      $sql = 'DELETE FROM list WHERE id = ?';
+      $stmt = $dbh->prepare($sql);
+      $data[] = $_GET['id'];
+      $stmt-> execute($data);
+    }
+
+
+  $sql = "SELECT id,name,ts,dt,massage FROM list
+          ORDER BY dt DESC,ts DESC";
   $stmt = $dbh->prepare($sql);
   $stmt -> execute();
+  $dbh = null;
 
   while(true){
     $rec = $stmt->fetch(PDO::FETCH_ASSOC);
     if($rec==false){
-      $dbh = null;
       break;
     }
+    print '<form method = "get" action="board.php">';
     print $rec['name'];
     print "  ";
-    print $rec['td'];
+    print $rec['dt'];
     print " ";
     print $rec['ts'];
-
-    print '<input type = "submmit" name="delete" value="delete">';
+    print '<input type = "hidden" name="id" value="'.$rec["id"].'">';
+    print '<input type = "submit" name="delete" value="delete">';
     print '<br />';
     print $rec['massage'];
+    print '<br /> <br />';
+    print '</form>';
   }
 }catch(Exception $e){
   print 'ただいまデータベースに接続できません';
