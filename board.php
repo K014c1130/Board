@@ -1,20 +1,70 @@
-<DOCTYPE html>
-  <html lang="ja">
-  <head>
+<!DOCTYPE html>
+<html>
+<head>
   <meta charset="UTF-8">
-  <title>login</title>
+  <title> 掲示板</title>
 </head>
 <body>
-  <h1>掲示板(工事中)</h1>
-こんにちは、
-  <?php
-print htmlspecialchars($_GET['name'],ENT_QUOTES, 'UTF-8');
-  ?>
-さん！
-この掲示板はまだできてないです。
-  <form action="login.php" method="get">
-<input type="submit"  value="戻る">
-</form>
 
+<?php
+try{
+  $dsn = 'mysql:dbname=board;host=localhost;charset=utf8';
+  $user = 'root';
+  $password = '';
+  $dbh = new PDO($dsn, $user, $password);
+  $dbh->query('SET NAMES utf8');
+?>
+  <div align="right">
+    <a href="login.php">ログアウト</a>
+  </div>
+  <br>
+  <?php
+    $username = htmlspecialchars($_GET['name']);
+    print $username;
+  ?>
+  さん<br>
+
+  <form method="get" action="board.php">
+    <input type="text" name="sentence">
+    <input type="hidden" name="name" value="<?php print $username ?>">
+    <input type="submit" value="add">
+  </form>
+
+  <?php
+    if(isset($_GET['sentence'])) {
+
+      $sql = 'INSERT INTO list(massage) VALUES (?)';
+      $stmt = $dbh->prepare($sql);
+      $data[] = $_GET['sentence'];
+      $stmt-> execute($data);
+    }
+
+
+  $sql = "SELECT name,ts,td,massage FROM list
+          ORDER BY td DESC,ts DESC";
+  $stmt = $dbh->prepare($sql);
+  $stmt -> execute();
+
+  while(true){
+    $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($rec==false){
+      $dbh = null;
+      break;
+    }
+    print $rec['name'];
+    print "  ";
+    print $rec['td'];
+    print " ";
+    print $rec['ts'];
+
+    print '<input type = "submmit" name="delete" value="delete">';
+    print '<br />';
+    print $rec['massage'];
+  }
+}catch(Exception $e){
+  print 'ただいまデータベースに接続できません';
+  exit();
+}
+?>
 </body>
-</html>
+    </html>
