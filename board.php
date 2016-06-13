@@ -7,7 +7,6 @@
 <body>
 
 <?php
-
 try{
   $dsn = 'mysql:dbname=board;host=localhost;charset=utf8';
   $user = 'root';
