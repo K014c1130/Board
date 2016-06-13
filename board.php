@@ -34,19 +34,15 @@ try{
   <?php
     if(isset($_GET['sentence'])) {
 
-      $sql = 'INSERT INTO list(item) VALUES (?)';
+      $sql = 'INSERT INTO list(massage) VALUES (?)';
       $stmt = $dbh->prepare($sql);
       $data[] = $_GET['sentence'];
       $stmt-> execute($data);
     }
 
-  $name = $_POST['name'];
-  $ts = $_POST['ts'];
-  $td = $_POST['td'];
-  $message = $_POST['massage'];
 
   $sql = "SELECT name,ts,td,massage FROM list
-          ORDER BY time DESC";
+          ORDER BY td DESC,ts DESC";
   $stmt = $dbh->prepare($sql);
   $stmt -> execute();
 
@@ -63,10 +59,10 @@ try{
     print $rec['ts'];
 
     print '<input type = "submmit" name="delete" value="delete">';
-    print "<br />";
-    print $rec['message'];
+    print '<br />';
+    print $rec['massage'];
   }
-}catch{
+}catch(Exception $e){
   print 'ただいまデータベースに接続できません';
   exit();
 }
