@@ -25,6 +25,8 @@ try{
 
   $dbh = null;
 
+}else if(isset($_GET['entry'])){
+  header("Location:shinki.php");
 }
 
 ?>
@@ -36,6 +38,7 @@ try{
 <?php print 'パスワード：'; ?>
 <input type="text" name="pass">
 <input type="submit" name="login" value="ログイン">
+<input type="submit" name="entry" value="新規登録">
 <br>
   <?php if(isset($_GET['login'])){
 if($_GET['name']=="" OR $_GET['pass']==""){
