@@ -15,7 +15,7 @@ try{
   $dbh = new PDO($dsn,$user,$password);
   $dbh->query('SET NAMES utf8');
 
-  $sql = 'SELECT name FROM list WHERE name=? AND pass=?';
+  $sql = 'SELECT name FROM userlist WHERE name=? AND pass=?';
   $stmt = $dbh->prepare($sql);
   $data[] = htmlspecialchars($_GET['name']);
   $data[] = htmlspecialchars($_GET['pass']);
@@ -38,7 +38,6 @@ try{
 <?php print 'パスワード：'; ?>
 <input type="text" name="pass">
 <input type="submit" name="login" value="ログイン">
-<input type="submit" name="entry" value="新規登録">
 <br>
   <?php if(isset($_GET['login'])){
 if($_GET['name']=="" OR $_GET['pass']==""){
@@ -48,6 +47,8 @@ if($_GET['name']=="" OR $_GET['pass']==""){
 }
 }
 ?>
+<br>
+<input type="submit" name="shinki" value="ユーザー新規登録">
 
 </form>
 
@@ -55,7 +56,9 @@ if($_GET['name']=="" OR $_GET['pass']==""){
 if(isset($_GET['login'])){
  if($rec==true){
   header("Location:board.php?name=".$_GET['name'].'"');
-}
+}}
+else if(isset($_GET['shinki'])){
+header("Location:shinki.php");
 }
 ?>
 <?php }catch(Exception $e){

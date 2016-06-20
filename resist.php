@@ -21,7 +21,7 @@ try{
   $dbh = new PDO($dsn, $user, $pass);
   $dbh->query('SET NAMES utf8');
 
-  $sql = 'INSERT INTO list(name,pass) VALUES(?,?)';
+  $sql = 'INSERT INTO userlist(name,pass) VALUES(?,?)';
   $stmt = $dbh->prepare($sql);
   $data[] = $username;
   $data[] = $password;
